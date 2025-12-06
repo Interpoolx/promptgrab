@@ -19,7 +19,12 @@ Inspect and capture HTML elements from any browser, then feed them directly into
 3. VS Code → Shows webview panel with captured HTML
 4. Copy & Paste → Paste into your AI tool chat
 5. AI Tool → Get instant suggestions/edits
+
 ```
+
+## Bookmarklet
+
+javascript:(d=>{s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/Interpoolx/promptgrab@main/bookmarklet-simple.js';d.body.appendChild(s)})(document)
 
 ## Installation
 
