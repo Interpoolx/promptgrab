@@ -1,0 +1,45 @@
+{
+  "name": "promptgrab",
+  "displayName": "PromptGrab",
+  "description": "AI-powered visual code editor - click any element to edit",
+  "version": "1.0.1",
+  "publisher": "rajeshkumar",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "grab-and-ask.start",
+        "title": "PromptGrab: Start Server"
+      },
+      {
+        "command": "grab-and-ask.stop",
+        "title": "PromptGrab: Stop Server"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {}
+}

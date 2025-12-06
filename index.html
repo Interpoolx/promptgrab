@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspect & Fix - How It Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .hero h1 {
+            font-size: 72px;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+        
+        .hero h1 .highlight {
+            background: linear-gradient(to right, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 28px;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-visual {
+            margin-top: 60px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .demo-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .demo-box {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .demo-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+        
+        .demo-label {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .demo-arrow {
+            font-size: 48px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #667eea 0%, #0a0a0a 300px);
+            padding: 0 20px 40px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+        
+        .workflow {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+        }
+        
+        .workflow-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+        
+        .step {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+        
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .step p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .arrow {
+            position: absolute;
+            font-size: 40px;
+            color: #667eea;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .comparison-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .comparison-card.old {
+            border: 3px solid #ff6b6b;
+        }
+        
+        .comparison-card.new {
+            border: 3px solid #51cf66;
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        }
+        
+        .comparison-card h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comparison-card li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .old li::before {
+            content: "❌";
+        }
+        
+        .new li::before {
+            content: "✅";
+        }
+        
+        .cta {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .cta h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .cta button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .cta button:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .hero-subtitle {
+                font-size: 20px;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .demo-flow {
+                flex-direction: column;
+            }
+            
+            .demo-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 36px;
+            }
+            
+            .header p {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div style="text-align: center;">
+                <span class="hero-badge">✨ NEW VS CODE EXTENSION</span>
+                <h1>
+                    <span class="highlight">Inspect & Fix</span><br>
+                    DevTools meets AI
+                </h1>
+                <p class="hero-subtitle">
+                    Click any element in your browser → AI fixes the source code instantly<br>
+                    No more hunting for files. No more context switching. Just pure productivity.
+                </p>
+                
+                <div class="hero-cta">
+                    <button class="btn-primary">🚀 Install for VS Code</button>
+                    <button class="btn-secondary">📺 Watch Demo (2 min)</button>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">10-30s</div>
+                        <div class="stat-label">Per Fix</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">10x</div>
+                        <div class="stat-label">Faster</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">Any</div>
+                        <div class="stat-label">Framework</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Visual Demo Flow -->
+            <div class="hero-visual">
+                <div class="demo-flow">
+                    <div class="demo-box">
+                        <div class="demo-icon">🌐</div>
+                        <div class="demo-label">Click Element</div>
+                    </div>
+                    
+                    <div class="demo-arrow">→</div>
+                    
+                    <div class="demo-box">
+                        <div class="demo-icon">📝</div>
+                        <div class="demo-label">VS Code Opens</div>
+                    </div>
+                    
+                    <div class="demo-arrow">→</div>
+                    
+                    <div class="demo-box">
+                        <div class="demo-icon">🤖</div>
+                        <div class="demo-label">AI Fixes It</div>
+                    </div>
+                    
+                    <div class="demo-arrow">→</div>
+                    
+                    <div class="demo-box">
+                        <div class="demo-icon">✅</div>
+                        <div class="demo-label">Auto-Deployed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🔍 How It Works</h1>
+            <p>From browser to production in 4 simple steps</p>
+        </div>
+        
+        <div class="workflow">
+            <h2 class="workflow-title">⚡ How It Works in 4 Steps</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🖱️</div>
+                    <h3>Click Element</h3>
+                    <p>Open any webpage and click the element you want to fix - button, text, layout, anything!</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">📂</div>
+                    <h3>VS Code Opens</h3>
+                    <p>The exact source file opens at the right line - React, Vue, Svelte, plain HTML, whatever!</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🤖</div>
+                    <h3>Describe Fix</h3>
+                    <p>"Make it red", "Add hover effect", "Center this" - AI understands natural language!</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">✨</div>
+                    <h3>Auto-Applied</h3>
+                    <p>Code is updated, saved, and your dev server hot-reloads. Done in seconds!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison">
+            <div class="comparison-card old">
+                <h2>😫 The Old Way</h2>
+                <ul>
+                    <li>Inspect element in browser</li>
+                    <li>Guess which file has the code</li>
+                    <li>Search through 50 files</li>
+                    <li>Copy class names manually</li>
+                    <li>Switch between browser and editor</li>
+                    <li>Write CSS/code yourself</li>
+                    <li>Save, reload, check</li>
+                    <li>Repeat 10 times</li>
+                </ul>
+                <p style="margin-top: 20px; color: #ff6b6b; font-weight: bold;">⏱️ Time: 5-15 minutes per fix</p>
+            </div>
+            
+            <div class="comparison-card new">
+                <h2>🚀 The Inspect & Fix Way</h2>
+                <ul>
+                    <li>Click element in browser</li>
+                    <li>File opens automatically</li>
+                    <li>Describe what you want in plain English</li>
+                    <li>AI writes the code</li>
+                    <li>Auto-saves and reloads</li>
+                    <li>Done!</li>
+                </ul>
+                <p style="margin-top: 20px; color: #51cf66; font-weight: bold;">⚡ Time: 10-30 seconds per fix</p>
+            </div>
+        </div>
+        
+        <div class="cta" style="margin-top: 40px;">
+            <h2>🎯 Perfect For</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; text-align: left;">
+                <div>
+                    <h3>🎨 UI Tweaks</h3>
+                    <p>Colors, spacing, alignment, sizing - visual changes in seconds</p>
+                </div>
+                <div>
+                    <h3>🐛 Quick Fixes</h3>
+                    <p>Typos, broken links, missing attributes, copy changes</p>
+                </div>
+                <div>
+                    <h3>🔧 Refactoring</h3>
+                    <p>Component improvements, style updates, accessibility fixes</p>
+                </div>
+                <div>
+                    <h3>📱 Responsive</h3>
+                    <p>Mobile breakpoint adjustments, flexbox fixes, grid tweaks</p>
+                </div>
+            </div>
+            <button style="margin-top: 40px;">Install Inspect & Fix for VS Code</button>
+        </div>
+        
+        <div class="workflow" style="margin-top: 40px;">
+            <h2 class="workflow-title">🎁 Bonus Features</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3>🌐 Universal</h3>
+                    <p>Works with React, Vue, Svelte, Angular, plain HTML, PHP - anything!</p>
+                </div>
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3>🤖 4 AI Providers</h3>
+                    <p>OpenAI GPT-4, Claude, Gemini, or local Ollama - you choose!</p>
+                </div>
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3>👀 Safe Preview</h3>
+                    <p>See diff before applying - never lose code accidentally</p>
+                </div>
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3>⚡ Lightning Fast</h3>
+                    <p>10-30 second turnaround from click to deployed fix</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
