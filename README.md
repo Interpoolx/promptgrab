@@ -24,7 +24,7 @@ Inspect and capture HTML elements from any browser, then feed them directly into
 
 ## Bookmarklet
 
-javascript:(d=>{s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/Interpoolx/promptgrab@main/bookmarklet-simple.js';d.body.appendChild(s)})(document)
+javascript:(d=>{s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/Interpoolx/promptgrab@main/bookmarklet-v14.js?v=1%27;d.body.appendChild(s)})(document)
 
 ## Installation
 
